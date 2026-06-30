@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import MainLayout from "../layouts/MainLayout";
+import BookCard from "../components/BookCard";
+
 function Books() {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    getBooks();
+    fetchBooks();
   }, []);
 
-  const getBooks = async () => {
+  const fetchBooks = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/books");
       setBooks(res.data);
@@ -17,40 +20,52 @@ function Books() {
     }
   };
 
+  const deleteBook = async (id) => {
+    if (!window.confirm("Delete this book?")) return;
+
+    try {
+      await axios.delete(`http://localhost:5000/api/books/${id}`);
+
+      fetchBooks();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const editBook = (id) => {
+    window.location.href = `/edit-book/${id}`;
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 p-10">
-      <h1 className="text-3xl font-bold mb-8">📚 All Books</h1>
+    <MainLayout>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold">Books</h1>
 
-      <table className="w-full bg-white shadow rounded">
-        <thead className="bg-blue-700 text-white">
-          <tr>
-            <th className="p-3">ID</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Category</th>
-            <th>ISBN</th>
-            <th>Quantity</th>
-            <th>Available</th>
-            <th>Year</th>
-          </tr>
-        </thead>
+        <button
+          onClick={() => (window.location.href = "/add-book")}
+          className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl"
+        >
+          + Add Book
+        </button>
+      </div>
 
-        <tbody>
+      {books.length === 0 ? (
+        <div className="text-center text-gray-500 mt-20 text-xl">
+          No Books Found
+        </div>
+      ) : (
+        <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-8">
           {books.map((book) => (
-            <tr key={book.id} className="border-b text-center">
-              <td className="p-3">{book.id}</td>
-              <td>{book.title}</td>
-              <td>{book.author}</td>
-              <td>{book.category}</td>
-              <td>{book.isbn}</td>
-              <td>{book.quantity}</td>
-              <td>{book.available}</td>
-              <td>{book.published_year}</td>
-            </tr>
+            <BookCard
+              key={book.id}
+              book={book}
+              onEdit={editBook}
+              onDelete={deleteBook}
+            />
           ))}
-        </tbody>
-      </table>
-    </div>
+        </div>
+      )}
+    </MainLayout>
   );
 }
 

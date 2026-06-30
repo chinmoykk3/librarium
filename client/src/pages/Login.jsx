@@ -46,7 +46,7 @@ function Login() {
 
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center">
-      <div className="grid lg:grid-cols-2 bg-white rounded-3xl shadow-2xl overflow-hidden w-[1000px]">
+      <div className="grid lg:grid-cols-2 bg-white rounded-3xl shadow-2xl overflow-hidden w-250">
         {/* Left */}
 
         <div className="bg-blue-700 text-white p-14 flex flex-col justify-center">

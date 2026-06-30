@@ -43,7 +43,7 @@ function AddBook() {
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-10 rounded-xl shadow-xl w-[700px]"
+        className="bg-white p-10 rounded-xl shadow-xl w-175"
       >
         <h1 className="text-3xl font-bold mb-8">📚 Add Book</h1>
 

@@ -1,34 +1,40 @@
-const express = require("express");
-const cors = require("cors");
 require("dotenv").config();
 
-// Database Connection
-require("./config/db");
+const express = require("express");
+const cors = require("cors");
 
-// Import Routes
+const db = require("./config/db");
+
 const authRoutes = require("./routes/authRoutes");
 const bookRoutes = require("./routes/bookRoutes");
+const memberRoutes = require("./routes/memberRoutes");
+const borrowingRoutes = require("./routes/borrowingRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
-// Create Express App
 const app = express();
 
-// Middleware
 app.use(cors());
-app.use(express.json());
 
-// API Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/books", bookRoutes);
+app.use(express.json());
 
 // Test Route
 app.get("/", (req, res) => {
-  res.send("Librarium Backend Running...");
+  res.send("Librarium API Running...");
 });
 
-// Server Port
+// Routes
+app.use("/api/auth", authRoutes);
+
+app.use("/api/books", bookRoutes);
+
+app.use("/api/members", memberRoutes);
+
+app.use("/api/borrowings", borrowingRoutes);
+
+app.use("/api/dashboard", dashboardRoutes);
+
 const PORT = process.env.PORT || 5000;
 
-// Start Server
 app.listen(PORT, () => {
-  console.log(`🚀 Server Running on Port ${PORT}`);
+  console.log(`Server Running on Port ${PORT}`);
 });
